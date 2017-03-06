@@ -19,18 +19,20 @@ VIRTUAL_ENV_DISABLE_PROMPT=true
 if [ ! -n "${BULLETTRAIN_PROMPT_ORDER+1}" ]; then
   BULLETTRAIN_PROMPT_ORDER=(
     time
+	dir
+	context
     status
     custom
-    context
-    dir
+#    context
+#    dir
     perl
     ruby
     virtualenv
-    nvm
+#    nvm
     go
     git
     hg
-    cmd_exec_time
+#    cmd_exec_time
   )
 fi
 
@@ -125,9 +127,10 @@ if [ ! -n "${BULLETTRAIN_GO_PREFIX+1}" ]; then
   BULLETTRAIN_GO_PREFIX="go "
 fi
 
+
 # DIR
 if [ ! -n "${BULLETTRAIN_DIR_BG+1}" ]; then
-  BULLETTRAIN_DIR_BG=blue
+  BULLETTRAIN_DIR_BG=black
 fi
 if [ ! -n "${BULLETTRAIN_DIR_FG+1}" ]; then
   BULLETTRAIN_DIR_FG=white
@@ -175,7 +178,7 @@ fi
 
 # CONTEXT
 if [ ! -n "${BULLETTRAIN_CONTEXT_BG+1}" ]; then
-  BULLETTRAIN_CONTEXT_BG=black
+  BULLETTRAIN_CONTEXT_BG=blue
 fi
 if [ ! -n "${BULLETTRAIN_CONTEXT_FG+1}" ]; then
   BULLETTRAIN_CONTEXT_FG=default
@@ -307,7 +310,8 @@ prompt_end() {
 # Context: user@hostname (who am I and where am I)
 context() {
   local user="$(whoami)"
-  [[ "$user" != "$BULLETTRAIN_CONTEXT_DEFAULT_USER" || -n "$BULLETTRAIN_IS_SSH_CLIENT" ]] && echo -n "${user}@$BULLETTRAIN_CONTEXT_HOSTNAME"
+#  [[ "$user" != "$BULLETTRAIN_CONTEXT_DEFAULT_USER" || -n "$BULLETTRAIN_IS_SSH_CLIENT" ]] && echo -n "${user}@$BULLETTRAIN_CONTEXT_HOSTNAME"
+  [[ "$user" != "$BULLETTRAIN_CONTEXT_DEFAULT_USER" || -n "$BULLETTRAIN_IS_SSH_CLIENT" ]] && echo -n "${user}"
 }
 
 prompt_context() {
@@ -511,7 +515,7 @@ prompt_status() {
   symbols=()
   [[ $RETVAL -ne 0 && $BULLETTRAIN_STATUS_EXIT_SHOW != true ]] && symbols+="✘"
   [[ $RETVAL -ne 0 && $BULLETTRAIN_STATUS_EXIT_SHOW == true ]] && symbols+="✘ $RETVAL"
-  [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡%f"
+  [[ $UID -eq 0 ]] && symbols+="%{%F{white}%}⚡%f"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="⚙"
 
   if [[ -n "$symbols" && $RETVAL -ne 0 ]]; then
